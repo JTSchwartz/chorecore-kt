@@ -2,6 +2,12 @@ package com.jtschwartz.chorecore
 
 import java.time.LocalDateTime
 
+/**
+ *  Logging utilities to better log errors, debugging information, and more
+ *
+ *  @author Jacob Schwartz
+ *  @since 1/19/20201
+ */
 object Logging {
 	private fun printToError(msg: String) {
 		System.err.print(msg)
