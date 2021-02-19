@@ -8,7 +8,18 @@ object Logging {
 	}
 	
 	private fun log(func: (String) -> Unit, category: Char, label: String, msg: String) {
-		func("${LocalDateTime.now()} | $category/$label: $msg\n")
+		func("${LocalDateTime.now()} | ${getCallerClassName()} | $category/$label: $msg\n")
+	}
+	
+	private fun getCallerClassName(): String? {
+		val stElements = Thread.currentThread().stackTrace
+		for (i in 1 until stElements.size) {
+			val ste = stElements[i]
+			if (ste.className != Utilities::class.java.name && ste.className.indexOf("java.lang.Thread") != 0) {
+				return ste.className
+			}
+		}
+		return null
 	}
 	
 	fun printErr(msg: String) {
