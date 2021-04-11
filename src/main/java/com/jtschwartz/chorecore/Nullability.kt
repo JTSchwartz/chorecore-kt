@@ -26,7 +26,7 @@ object Nullability {
 		callback()
 	}
 	
-	inline fun <reified T: Any> Any?.whileNull(vararg funcs: () -> Unit): Any? {
-		return this.whileIs( *funcs)
-	}
+//	inline fun <reified T: Any> Any?.whileNull(vararg funcs: () -> Unit): Any? {
+//		return this.whileIs( *funcs)
+//	}
 }

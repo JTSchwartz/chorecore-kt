@@ -7,6 +7,23 @@
 	<groupId>com.jtschwartz</groupId>
 	<artifactId>ChoreCore</artifactId>
 	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>ChoreCore</name>
+	<description>Utilities to simplify many commonly used pieces of code</description>
+	<url>https://chorecore.com</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/JTSchwartz/chorecore-kt</url>
+	</scm>
 
 	<properties>
 		<maven.compiler.source>8</maven.compiler.source>
