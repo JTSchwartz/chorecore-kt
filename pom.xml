@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jtschwartz</groupId>
-	<artifactId>ChoreCore</artifactId>
+	<artifactId>chorechore</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
-	<name>ChoreCore</name>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Utilities to simplify many commonly used pieces of code</description>
 	<url>https://chorecore.dev</url>
 
@@ -21,14 +21,27 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>Jacob Schwartz</name>
+			<email>jacob@jtschwartz.com</email>
+			<organization>JTSchwartz</organization>
+			<organizationUrl>https://jtschwartz.com</organizationUrl>
+		</developer>
+	</developers>
+
 	<scm>
+		<connection>scm:git:git://github.com/jtschwartz/chorecore-kt.git</connection>
+		<developerConnection>scm:git:ssh://github.com:jtschwartz/chorecore-kt.git</developerConnection>
 		<url>https://github.com/JTSchwartz/chorecore-kt</url>
 	</scm>
 
 	<properties>
 		<maven.compiler.source>8</maven.compiler.source>
 		<maven.compiler.target>8</maven.compiler.target>
-		<kotlin.version>1.4.30</kotlin.version>
+		<kotlin.version>1.5.10</kotlin.version>
+		<dokka.version>1.5.0</dokka.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -39,7 +52,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-test</artifactId>
+			<artifactId>kotlin-test-junit</artifactId>
 			<version>${kotlin.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -57,7 +70,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>RELEASE</version>
+			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -75,6 +88,11 @@
 						<goals>
 							<goal>compile</goal>
 						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+							</sourceDirs>
+						</configuration>
 					</execution>
 					<execution>
 						<id>test-compile</id>
@@ -82,13 +100,114 @@
 						<goals>
 							<goal>test-compile</goal>
 						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+							</sourceDirs>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<jvmTarget>1.8</jvmTarget>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<configuration>
+					<includes>
+						<include>Test*</include>
+						<include>*Test</include>
+						<include>*TestCase</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.dokka</groupId>
+				<artifactId>dokka-maven-plugin</artifactId>
+				<version>${dokka.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>dokka</goal>
+							<goal>javadoc</goal>
+							<goal>javadocJar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<dokkaPlugins>
+						<plugin>
+							<groupId>org.jetbrains.dokka</groupId>
+							<artifactId>kotlin-as-java-plugin</artifactId>
+							<version>1.5.10</version>
+						</plugin>
+					</dokkaPlugins>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
