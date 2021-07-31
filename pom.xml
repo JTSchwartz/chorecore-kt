@@ -6,8 +6,8 @@
 
 	<groupId>com.jtschwartz</groupId>
 	<artifactId>chorechore</artifactId>
-	<version>1.0</version>
-	<packaging>pom</packaging>
+	<version>1.1</version>
+	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Utilities to simplify many commonly used pieces of code</description>
@@ -76,6 +76,8 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
@@ -141,7 +143,7 @@
 						<plugin>
 							<groupId>org.jetbrains.dokka</groupId>
 							<artifactId>kotlin-as-java-plugin</artifactId>
-							<version>1.5.10</version>
+							<version>1.5.0</version>
 						</plugin>
 					</dokkaPlugins>
 				</configuration>
@@ -154,7 +156,7 @@
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar-no-fork</goal>
+							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
