@@ -11,7 +11,7 @@
 
 	<name>ChoreCore</name>
 	<description>Utilities to simplify many commonly used pieces of code</description>
-	<url>https://chorecore.com</url>
+	<url>https://chorecore.dev</url>
 
 	<licenses>
 		<license>
@@ -47,6 +47,18 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
