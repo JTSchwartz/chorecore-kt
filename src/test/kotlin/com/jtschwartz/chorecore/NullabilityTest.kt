@@ -48,7 +48,6 @@ internal class NullabilityTest {
 		}
 		
 		assertEquals(expected, actual)
-		
 	}
 	
 	@ParameterizedTest
@@ -60,7 +59,7 @@ internal class NullabilityTest {
 			actual = true
 		}
 		
-		assertNotEquals(expected, actual)
+		assertEquals(expected, actual)
 	}
 	
 	@ParameterizedTest
@@ -89,8 +88,8 @@ internal class NullabilityTest {
 		}
 		
 		val actual = returnValue.isNotNull()
-		assertNotEquals(expected, enteredBlock)
-		assertNotEquals(expected, actual)
+		assertEquals(expected, enteredBlock)
+		assertEquals(expected, actual)
 	}
 	
 	@ParameterizedTest
@@ -119,7 +118,7 @@ internal class NullabilityTest {
 		}
 		
 		val actual = returnValue != 1
-		assertNotEquals(expected, enteredBlock)
-		assertNotEquals(expected, actual)
+		assertEquals(expected, enteredBlock)
+		assertEquals(expected, actual)
 	}
 }

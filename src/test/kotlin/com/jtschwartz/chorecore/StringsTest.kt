@@ -22,6 +22,21 @@ internal class StringsTest {
 			Arguments.of(-1, "Hello, World"),
 			Arguments.of(-3, "Hello, Wor")
 																)
+		
+		@JvmStatic
+		fun capitalizeTestArguments(): Stream<Arguments> = Stream.of(
+			Arguments.of("hello world", "Hello world"),
+			Arguments.of("hello World", "Hello World"),
+			Arguments.of("HELLO WORLD", "HELLO WORLD")
+																	)
+		
+		@JvmStatic
+		fun sentenceCaseTestArguments(): Stream<Arguments> = Stream.of(
+			Arguments.of("hello World", "Hello world"),
+			Arguments.of("hello. world", "Hello. World"),
+			Arguments.of("hello. world.", "Hello. World."),
+			Arguments.of("HELLO. World", "Hello. World")
+		                                                            )
 	}
 	
 	@Test
@@ -65,9 +80,58 @@ internal class StringsTest {
 	
 	@Test
 	fun unaryMinusOperatorTest() {
+		val actual = "         String            "
+		val expected = "String"
+		assertEquals(expected, -actual)
+	}
+	
+	@Test
+	fun decOperatorTest() {
 		var actual = "         String            "
 		val expected = "String"
 		--actual
+		assertEquals(expected, actual)
+	}
+	
+	@ParameterizedTest
+	@MethodSource("capitalizeTestArguments")
+	fun capitalizeTest(input: String, expected: String) {
+		val actual = input.capitalize()
+		assertEquals(expected, actual)
+	}
+	
+	@ParameterizedTest
+	@MethodSource("sentenceCaseTestArguments")
+	fun sentenceCaseTest(input: String, expected: String) {
+		val actual = input.sentenceCase()
+		assertEquals(expected, actual)
+	}
+	
+	@Test
+	fun replaceByRegexMapTest() {
+		val map = mapOf(
+			"[eo]".toRegex() to "a",
+			"A".toRegex() to "z",
+			"\\s+".toRegex() to "_",
+			"[,!]".toRegex() to ""
+					   )
+		val actual = helloWorld.replaceByRegexMap(map)
+		val expected = "Halla_Warld"
+		assertEquals(expected, actual)
+	}
+	
+	@Test
+	fun replaceByMapTest() {
+		val map = mapOf(
+			"e" to "a",
+			"o" to "a",
+			"A" to "z",
+			" " to "_",
+			"," to "",
+			"!" to ""
+		               )
+		val actual = helloWorld.replaceByMap(map)
+		val expected = "Halla_Warld"
 		assertEquals(expected, actual)
 	}
 }

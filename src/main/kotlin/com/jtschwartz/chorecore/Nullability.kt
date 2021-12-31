@@ -43,5 +43,5 @@ inline fun <T, reified R> T.ifNull(returnIfNotNull: R? = if (this is R) this els
  */
 
 inline fun <T, R> T.ifNotNull(returnIfNull: R? = null, block: (T) -> R): R? {
-	return if (this.isNotNull()) returnIfNull else block(this)
+	return if (this.isNotNull()) block(this) else returnIfNull
 }
