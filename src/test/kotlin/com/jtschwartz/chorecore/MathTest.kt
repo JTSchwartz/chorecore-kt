@@ -24,6 +24,7 @@ internal class MathTest {
 			Arguments.of(1.0, listOf("1.0", "1")),
 			Arguments.of(-1.0, listOf("-1.0", "-1")),
 			Arguments.of(1.24, listOf("1.24", "1 6/25", "31/25")),
+			Arguments.of(11.24, listOf("11.24", "11 6/25")),
 			Arguments.of(-1.24, listOf("-1.24", "-1 6/25", "-31/25")))
 	}
 	

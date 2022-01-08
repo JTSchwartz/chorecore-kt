@@ -27,7 +27,7 @@ val STRING_FRACTION_FORMAT = "[1-9]\\d*/[1-9]\\d*".toRegex()
  *  @author Jacob Schwartz
  */
 
-val STRING_INTEGER_AND_FRACTION_FORMAT = "[1-9]+ [1-9]\\d*/[1-9]\\d*".toRegex()
+val STRING_INTEGER_AND_FRACTION_FORMAT = "[1-9][0-9]* [1-9]\\d*/[1-9]\\d*".toRegex()
 
 /**
  *  Finds the closest number in an array to the given needle.
