@@ -2,8 +2,11 @@
 
 package com.jtschwartz.chorecore
 
+import com.jtschwartz.chorecore.internal.InternalException
+import java.lang.reflect.InvocationTargetException
 import java.util.regex.Pattern
 import kotlin.math.abs
+import kotlin.reflect.full.memberProperties
 
 /**
  *  Splits this char sequence to a list of strings around occurrences of the specified delimiter.
@@ -72,7 +75,7 @@ operator fun String.dec(): String = this.trim()
  *  @author Jacob Schwartz
  */
 
-fun String.capitalize(): String  = this.replaceFirstChar { c -> c.uppercase() }
+fun String.capitalize(): String = this.replaceFirstChar { c -> c.uppercase() }
 
 /**
  *  Splits a String on periods (i.e. into individual sentences) and makes each sentence entirely lowercase except for the first character of the first word.
@@ -103,3 +106,65 @@ fun String.replaceByRegexMap(map: Map<Regex, String>): String {
  */
 
 fun String.replaceByMap(map: Map<String, String>): String = this.replaceByRegexMap(map.mapKeys { it.key.toRegex() })
+
+inline fun <reified T: Any> T.generateString(
+	exclude: List<String> = emptyList(),
+	excludeNull: Boolean = false,
+	excludeUninitialized: Boolean = false,
+	excludeNullAndUninitialized: Boolean = false,
+	uninitializedValue: String = "UNINITIALIZED",
+	displayClassName: Boolean = true,
+	openingBracket: String = "(",
+	closingBracket: String = ")",
+	separator: String = ", ",
+	assignment: String = "=",
+	crossinline propertyNameHandler: (String) -> String = { it },
+	crossinline propertyValueHandler: (Any?) -> String = { it?.toString() ?: "null" }
+): String {
+	return T::class.memberProperties.asSequence().filter { it.name !in exclude }
+		.map { property ->
+			val prefix = "${propertyNameHandler(property.name)}$assignment"
+
+			try {
+				val value = property.getter.call(this)
+				if (value.isNull() && (excludeNull || excludeNullAndUninitialized)) throw InternalException()
+				"$prefix${propertyValueHandler(value)}"
+			} catch (_: InvocationTargetException) {
+				if (excludeUninitialized || excludeNullAndUninitialized) throw InternalException()
+				"$prefix$uninitializedValue"
+			} catch (_: InternalException) {
+				null
+			}
+		}.filter { !it.isNullOrBlank() }
+		.joinToString(separator, "${if (displayClassName) T::class.simpleName else ""}$openingBracket", closingBracket)
+}
+
+data class StringGenerationSettings(
+	var exclude: List<String> = emptyList(),
+	var excludeNull: Boolean = false,
+	var excludeUninitialized: Boolean = false,
+	var excludeNullAndUninitialized: Boolean = false,
+	var uninitializedValue: String = "UNINITIALIZED",
+	var displayClassName: Boolean = true,
+	var openingBracket: String = "(",
+	var closingBracket: String = ")",
+	var separator: String = ", ",
+	var assignment: String = "=",
+	var propertyNameHandler: (String) -> String = { it },
+	var propertyValueHandler: (Any?) -> String = { it?.toString() ?: "null" }
+)
+
+inline fun <reified T: Any> T.generateString(settings: StringGenerationSettings): String = generateString(
+		exclude = settings.exclude,
+		excludeNull = settings.excludeNull,
+		excludeUninitialized = settings.excludeUninitialized,
+		excludeNullAndUninitialized = settings.excludeNullAndUninitialized,
+		uninitializedValue = settings.uninitializedValue,
+		displayClassName = settings.displayClassName,
+		openingBracket = settings.openingBracket,
+		closingBracket = settings.closingBracket,
+		separator = settings.separator,
+		assignment = settings.assignment,
+		propertyNameHandler = settings.propertyNameHandler,
+		propertyValueHandler = settings.propertyValueHandler
+)
