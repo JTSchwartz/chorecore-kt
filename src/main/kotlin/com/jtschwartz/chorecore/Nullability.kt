@@ -30,7 +30,7 @@ fun <T> T.isNotNull(): Boolean {
  *  @return Return value is the lambda result, unless the context object is not null, in which case `returnIfNotNull` is returned.
  */
 
-inline fun <T, reified R> T.ifNull(returnIfNotNull: R? = if (this is R) this else null, block: (T) -> R): R? {
+inline fun <T, reified R> T?.ifNull(returnIfNotNull: R? = if (this is R) this else null, block: (T?) -> R): R? {
 	return if (this.isNull()) block(this) else returnIfNotNull
 }
 
@@ -42,6 +42,6 @@ inline fun <T, reified R> T.ifNull(returnIfNotNull: R? = if (this is R) this els
  *  @return Return value is the lambda result, unless the context object is null, in which case `returnIfNull` is returned.
  */
 
-inline fun <T, R> T.ifNotNull(returnIfNull: R? = null, block: (T) -> R): R? {
-	return if (this.isNotNull()) block(this) else returnIfNull
+inline fun <T, R> T?.ifNotNull(returnIfNull: R? = null, block: (T) -> R): R? {
+	return if (this.isNotNull()) block(this!!) else returnIfNull
 }
