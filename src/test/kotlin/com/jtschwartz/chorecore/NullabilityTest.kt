@@ -18,10 +18,6 @@ internal class NullabilityTest {
 			Arguments.of(null, false),
 			Arguments.of(0, true))
 		
-		@JvmStatic
-		fun ifNullTestWithReturnArguments(): Stream<Arguments> = Stream.of(
-			Arguments.of(null, false),
-			Arguments.of(0, true))
 	}
 	
 	@ParameterizedTest
@@ -120,5 +116,28 @@ internal class NullabilityTest {
 		val actual = returnValue != 1
 		assertEquals(expected, enteredBlock)
 		assertEquals(expected, actual)
+	}
+	
+	@Test
+	fun `isNotNullOrEmpty on Strings`() {
+		assertTrue("NotEmpty".isNotNullOrEmpty())
+		assertTrue(" ".isNotNullOrEmpty())
+		assertFalse("".isNotNullOrEmpty())
+		assertFalse(null.isNotNullOrEmpty())
+	}
+	
+	@Test
+	fun `isNotNullOrEmpty on Collections`() {
+		assertTrue(listOf(0).isNotNullOrEmpty())
+		assertFalse(emptyList<Test>().isNotNullOrEmpty())
+		assertFalse(null.isNotNullOrEmpty())
+	}
+	
+	@Test
+	fun isNotNullOrBlankTest() {
+		assertTrue("NotEmpty".isNotNullOrBlank())
+		assertFalse(" ".isNotNullOrBlank())
+		assertFalse("".isNotNullOrBlank())
+		assertFalse(null.isNotNullOrBlank())
 	}
 }
